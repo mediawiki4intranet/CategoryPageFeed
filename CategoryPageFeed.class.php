@@ -119,7 +119,7 @@ class SpecialCategoryPageFeed extends SpecialPage
         // Store query values in hidden fields so that form submission doesn't lose them
         $hidden = array();
         foreach ($this->opts->getUnconsumedValues() as $key => $value)
-            $hidden[] = Xml::hidden($key, $value);
+            $hidden[] = Html::hidden($key, $value);
         $hidden = implode("\n", $hidden);
 
         $fields[] = Xml::label(wfMsg('categorypagefeed-desc'), 'mw-np-category');
@@ -132,7 +132,7 @@ class SpecialCategoryPageFeed extends SpecialPage
         $form = implode('&nbsp;', $fields);
 
         $form = Xml::openElement('form', array('action' => $wgScript)) .
-            Xml::hidden('title', $this->getTitle()->getPrefixedDBkey()) .
+            Html::hidden('title', $this->getTitle()->getPrefixedDBkey()) .
             "$form $hidden</form>";
 
         $wgOut->addHTML($form);
