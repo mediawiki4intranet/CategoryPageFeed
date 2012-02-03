@@ -21,6 +21,9 @@
 # This extension adds a special page Special:CategoryPageFeed
 # which allows to list pages recently added to a specific category
 
+# FIXME: This extension doesn't work as expected, because categorylinks.cl_timestamp
+# contains the last modification time of a page, not the time when it was first added to category
+
 $wgExtensionCredits['specialpage'][] = array(
     'name'           => 'CategoryPageFeed',
     'version'        => '2011-10-26',
