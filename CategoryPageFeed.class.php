@@ -27,7 +27,6 @@ class SpecialCategoryPageFeed extends SpecialPage
     {
         parent::__construct('CategoryPageFeed');
         $this->includable(true);
-        wfLoadExtensionMessages('CategoryPageFeed');
     }
 
     // Parse options
@@ -157,8 +156,8 @@ class SpecialCategoryPageFeed extends SpecialPage
         global $wgLang, $wgContLang;
 
         $title = Title::newFromRow($result);
-        // HaloACL/IntraACL support
-        if (method_exists($title, 'userCanReadEx') && !$title->userCanReadEx())
+        // Page access rights support
+        if (!$title->userCanRead())
             return '';
 
         $dm = $wgContLang->getDirMark();
@@ -282,10 +281,7 @@ class SpecialCategoryPageFeed extends SpecialPage
     protected function feedItem($row)
     {
         $title = Title::newFromRow($row);
-/*patch|2011-05-12|IntraACL|start*/
-        if ($title && (!method_exists($title, 'userCanReadEx') ||
-            $title->userCanReadEx()))
-/*patch|2011-05-12|IntraACL|end*/
+        if ($title && $title->userCanRead())
         {
             $date = $row->cl_timestamp;
             $comments = $title->getTalkPage()->getFullURL();
@@ -297,7 +293,9 @@ class SpecialCategoryPageFeed extends SpecialPage
                 $date,
                 $this->feedItemAuthor($row),
                 $comments);
-        } else {
+        }
+        else
+        {
             return null;
         }
     }
